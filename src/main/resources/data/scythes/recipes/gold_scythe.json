@@ -1,0 +1,19 @@
+{
+  "result": {
+    "item": "scythes:gold_scythe"
+  },
+  "pattern": [
+    " G ",
+    "  G",
+    "SG "
+  ],
+  "type": "minecraft:crafting_shaped",
+  "key": {
+    "S": {
+      "tag": "forge:rods/wooden"
+    },
+    "G": {
+      "tag": "forge:ingots/gold"
+    }
+  }
+}
