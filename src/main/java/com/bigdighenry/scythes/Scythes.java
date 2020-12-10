@@ -25,15 +25,14 @@ public class Scythes {
     }
 
     @SubscribeEvent
+    //creative allow to work
     public void onPlayerInteract(PlayerInteractEvent.LeftClickBlock event) {
-
         if (event.getPlayer().isCreative()) {
             ItemStack heldItem = event.getPlayer().getHeldItem(event.getHand());
             if (!heldItem.isEmpty() && heldItem.getItem() instanceof SickleItem) {
                 heldItem.getItem().onBlockDestroyed(heldItem, event.getWorld(), event.getWorld().getBlockState(event.getPos()), event.getPos(), event.getPlayer());
             }
         }
-
     }
 
 }

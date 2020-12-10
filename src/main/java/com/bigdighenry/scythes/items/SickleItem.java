@@ -50,8 +50,10 @@ public class SickleItem extends ToolItem {
 
         if (!(entityLiving instanceof PlayerEntity)) return false;
         PlayerEntity player = (PlayerEntity) entityLiving;
+        Block destroyedBlock = state.getBlock();
 
-        if (state.getBlock().getTags().contains(new ResourceLocation("minecraft:leaves")) || state.getBlock() instanceof  LeavesBlock) {
+        //break leaf, 3d harvests leaves
+        if (destroyedBlock.getTags().contains(new ResourceLocation("minecraft:leaves")) || destroyedBlock instanceof LeavesBlock) {
             for (int i = -1; i <= 1; i++) {
                 for (int j = -1; j <= 1; j++) {
                     for (int k = -1; k <= 1; k++) {
@@ -72,13 +74,13 @@ public class SickleItem extends ToolItem {
             return used;
         }
 
-        if ((state.getBlock() instanceof LilyPadBlock)) {
+        //else break lilypad, 2d harvest lilypads
+        if ((destroyedBlock instanceof LilyPadBlock)) {
             for (int i = -2; i <= 2; i++) {
                 for (int j = -2; j <= 2; j++) {
                     Block blockToCheck = world.getBlockState(pos.add(i,0,j)).getBlock();
-                    BlockState meta = world.getBlockState(pos.add(i,0,j));
                     if (blockToCheck instanceof LilyPadBlock) {
-                        if (blockToCheck.canHarvestBlock(meta, world, pos.add(i,0,j), player)) {
+                        if (blockToCheck.canHarvestBlock(world.getBlockState(pos.add(i,0,j)), world, pos.add(i,0,j), player)) {
                             world.destroyBlock(pos.add(i,0,j), true);
                         }
                         used = true;
@@ -87,7 +89,24 @@ public class SickleItem extends ToolItem {
             }
         }
 
-        if (!(state.getBlock() instanceof LilyPadBlock)) {
+        //else break sugarcane, 2d harvest sugarcane
+        if ((destroyedBlock instanceof SugarCaneBlock)) {
+            for (int i = -2; i <= 2; i++) {
+                for (int j = -2; j <= 2; j++) {
+                    Block blockToCheck = world.getBlockState(pos.add(i,0,j)).getBlock();
+                    if (blockToCheck instanceof SugarCaneBlock) {
+                        if (blockToCheck.canHarvestBlock(world.getBlockState(pos.add(i,0,j)), world, pos.add(i,0,j), player)) {
+                            world.destroyBlock(pos.add(i,0,j), true);
+                        }
+                        used = true;
+                    }
+                }
+            }
+        }
+
+
+        //else break anything, harvest BushBlock and not lilypads!
+        if (!(destroyedBlock instanceof LilyPadBlock)) {
             for (int i = -2; i <= 2; i++) {
                 for (int j = -2; j <= 2; j++) {
                     Block blockToCheck = world.getBlockState(pos.add(i,0,j)).getBlock();
